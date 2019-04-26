@@ -86,16 +86,23 @@ const bandInfo = function(choice){
   );
 };
 
-var fs = require("fs");
-fs.readFile("random.txt", "utf8", function(error, data){
-  if(error){
-    return console.log(error);
-  }
-  console.log(data);
-})
+const randomInfo = function(){
+  var fs = require("fs");
+  fs.readFile("random.txt", "utf8", function(error, data){
+    if(error){
+      return console.log(error);
+    }
+    console.log(data);
+    var dataArr = data.split(",");
+    console.log(dataArr[1]);
+    let randomCommand = dataArr[0];
+    let randomSong = dataArr[1];
+    userChoices(randomCommand, randomSong);
+  })
+};
 
-let userChoices = function(type, choice){
-  console.log(type, choice);
+const userChoices = function(type, choice){
+  console.log("User Choices: " + type, choice);
   switch(type){
     case 'movie-this': movieInfo(choice);
     break;
