@@ -35,16 +35,21 @@ const movieInfo = function(choice){
   );
 };
 
-spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
-  if (err) {
-    return console.log('Error occurred: ' + err);
-  }
-console.log(data); 
-});
 
-// const spotifyInfo = function(){
 
-// };
+const spotifyInfo = function(choice){
+  spotify.search({ type: 'track', query: choice }, function(err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
+    }
+    const song = data.tracks.items;
+    for(let i = 0; i < song.length; i++){
+      console.log("Song Result #" + (i+1)); 
+      console.log("Artist: " + song[i].name); 
+      console.log("**".repeat(40)); 
+    } 
+  });
+};
 
 
 
@@ -53,7 +58,7 @@ let userChoices = function(type, choice){
   switch(type){
     case 'movie-this': movieInfo(choice);
     break;
-    case 'spotify-this': spotifyInfo(choice);
+    case 'spotify-this-song': spotifyInfo(choice);
     break;
     default: console.log("Liri doesn't understand that command")
   }
