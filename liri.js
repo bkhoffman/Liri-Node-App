@@ -64,7 +64,35 @@ const spotifyInfo = function(choice){
   });
 };
 
+var getVenueName = function(venue){
+  return venue.name
+};
+const bandInfo = function(choice){
+  let bandName = choice;
+  let queryUrl = "https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp";
+  console.log(queryUrl);
+  axios.get(queryUrl).then(
+    function(response) {
+      let bandData = response;
+      for(var i = 0; i < bandData.length; i++){
+        console.log( bandData[i] );
+      }
+      // console.log(bandData);
+      // console.log("Info: "+data.EventData);
+      console.log("Name of the venue: ");
+      console.log("Venue location: ");
+      console.log("Date of the Event: ");
+    }
+  );
+};
 
+var fs = require("fs");
+fs.readFile("random.txt", "utf8", function(error, data){
+  if(error){
+    return console.log(error);
+  }
+  console.log(data);
+})
 
 let userChoices = function(type, choice){
   console.log(type, choice);
@@ -72,6 +100,10 @@ let userChoices = function(type, choice){
     case 'movie-this': movieInfo(choice);
     break;
     case 'spotify-this-song': spotifyInfo(choice);
+    break;
+    case 'concert-this': bandInfo(choice);
+    break;
+    case 'do-what-it-says': randomInfo();
     break;
     default: console.log("Liri doesn't understand that command")
   }
