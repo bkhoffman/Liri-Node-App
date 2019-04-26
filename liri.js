@@ -35,17 +35,30 @@ const movieInfo = function(choice){
   );
 };
 
-
+var getArtistName = function(artist){
+  return artist.name
+};
 
 const spotifyInfo = function(choice){
-  spotify.search({ type: 'track', query: choice }, function(err, data) {
+  spotify.search({ type: 'track', query: choice, limit: 1 }, function(err, data) {
     if (err) {
       return console.log('Error occurred: ' + err);
     }
+    
     const song = data.tracks.items;
+    console.log(song);
     for(let i = 0; i < song.length; i++){
       console.log("Song Result #" + (i+1)); 
-      console.log("Artist: " + song[i].name); 
+      let artistsArray = song[i].album.artists.data;
+      console.log(artistsArray);
+      // for(let i = 0; i < artistsArray.length; i++){
+      //   let artistObject = artistsArray[0];
+      //   console.log("Artist: " + artistObject);
+      // } 
+      console.log("Artist: " + song[i].artists.map(getArtistName)); 
+      console.log("Song Name: " + song[i].name); 
+      console.log("Preview Link: " + song[i].preview_url); 
+      console.log("Album: " + song[i].album.name); 
       console.log("**".repeat(40)); 
     } 
   });
