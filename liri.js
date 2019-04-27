@@ -63,14 +63,15 @@ const bandInfo = function(choice){
     function(response) {
       let bandData = response.data;
       // console.log(bandData);
-      for(var i = 0; i < bandData.length; i++){ 
-        console.log("Name of the venue: "  + bandData[1].description);
-        if (bandData[1].venue.region = " "){
-          console.log("Venue location: " + bandData[1].venue.city);
+      for(var i = 0; i < 10; i++){ 
+        console.log("Name of the venue: "  + bandData[i].venue.name);
+        if (bandData[i].venue.region = " "){
+          console.log("Venue location: " + bandData[i].venue.city +", " + bandData[i].venue.country);
         }else{
-          console.log("Venue location: " + bandData[1].venue.city + ", " + bandData[1].venue.region);
+          console.log("Venue location: " + bandData[i].venue.city + ", " + bandData[i].venue.region + 
+          ", " + bandData[i].venue.country);
         }
-        let dateTime = moment(bandData[1].datetime).format('MMMM Do YYYY, h:mm a');
+        let dateTime = moment(bandData[i].datetime).format('MMMM Do YYYY, h:mm a');
         console.log("Date of the Event: " + dateTime);
         console.log("**".repeat(40));
       }
