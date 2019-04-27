@@ -1,29 +1,26 @@
+//Everything Required
 require("dotenv").config();
 const keys = require("./keys.js");
-
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
-
 const axios = require("axios");
-
+//Grab user inputs
 let command = process.argv[2];
 let userInput = process.argv[3];
 
-
+//Pass "choice" arg into movieInfo function query OMDB api, log Data
 const movieInfo = function(choice){
   let movieName = choice;
   let queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
-  console.log(queryUrl);
   axios.get(queryUrl).then(
     function(response) {
       console.log("Title: " + response.data.Title);
       console.log("Release Year: " + response.data.Year);
       console.log("IMDB Rating: " + response.data.imdbRating);
+      //Use a "for loop" to iterate through Ratings array of Objects to get to Rotten Tomatos
       let rating = response.data.Ratings;
-      // console.log(rating);
-      for(let i = 0; i < rating.length; i++){
+      for(let i = 2; i < rating.length; i++){
         let rottenTomObject = rating[1];
-        // console.log(rottenTomObject);
         console.log("Rotten Tomatos Rating: " + rottenTomObject.Value);
       }
       console.log("Country: " + response.data.Country); 
@@ -35,27 +32,16 @@ const movieInfo = function(choice){
   );
 };
 
-var getArtistName = function(artist){
-  return artist.name
-};
-
 const spotifyInfo = function(choice){
   spotify.search({ type: 'track', query: choice, limit: 1 }, function(err, data) {
     if (err) {
       return console.log('Error occurred: ' + err);
     }
-    
     const song = data.tracks.items;
-    console.log(song);
+    // console.log(song);
     for(let i = 0; i < song.length; i++){
-      console.log("Song Result #" + (i+1)); 
-      let artistsArray = song[i].album.artists.data;
-      console.log(artistsArray);
-      // for(let i = 0; i < artistsArray.length; i++){
-      //   let artistObject = artistsArray[0];
-      //   console.log("Artist: " + artistObject);
-      // } 
-      console.log("Artist: " + song[i].artists.map(getArtistName)); 
+      console.log("Song Result:");
+      console.log("Artist My version: " + song[i].artists[0].name);  
       console.log("Song Name: " + song[i].name); 
       console.log("Preview Link: " + song[i].preview_url); 
       console.log("Album: " + song[i].album.name); 
@@ -64,9 +50,9 @@ const spotifyInfo = function(choice){
   });
 };
 
-var getVenueName = function(venue){
-  return venue.name
-};
+// var getVenueName = function(venue){
+//   return venue.name
+// };
 const bandInfo = function(choice){
   let bandName = choice;
   let queryUrl = "https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp";
@@ -100,7 +86,8 @@ const randomInfo = function(){
     userChoices(randomCommand, randomSong);
   })
 };
-
+//Pass user input into Switch function to invoke appropriate function
+//Pass user choice as args into those fuctions to send Requests
 const userChoices = function(type, choice){
   console.log("User Choices: " + type, choice);
   switch(type){
