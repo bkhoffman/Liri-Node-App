@@ -7,7 +7,7 @@ const axios = require("axios");
 const moment = require("./node_modules/moment");
 //Grab user inputs
 let command = process.argv[2];
-let userInput = process.argv[3];
+let userInput = process.argv.slice(3).join(" ");
 
 //Pass "choice" arg into movieInfo function query OMDB api, log Data
 const movieInfo = function(choice){
@@ -87,7 +87,7 @@ const randomInfo = function(){
     }
     console.log(data);
     var dataArr = data.split(",");
-    console.log(dataArr[1]);
+    console.log("Song Name: " + dataArr[1]);
     let randomCommand = dataArr[0];
     let randomSong = dataArr[1];
     userChoices(randomCommand, randomSong);
