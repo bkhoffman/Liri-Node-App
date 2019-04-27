@@ -4,6 +4,7 @@ const keys = require("./keys.js");
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
 const axios = require("axios");
+const moment = require("./node_modules/moment");
 //Grab user inputs
 let command = process.argv[2];
 let userInput = process.argv[3];
@@ -27,12 +28,16 @@ const movieInfo = function(choice){
       console.log("Language: " + response.data.Language);
       console.log("Plot: " + response.data.Plot); 
       console.log("Actors: " + response.data.Actors); 
-      console.log("---".repeat(30)); 
+      console.log("**".repeat(40)); 
     }
   );
 };
-
+//Pass user Choice arg into spotifyInfo func. Check for no song input and assign to "The Sign" default if blank.
+//Query with limit 1. Return Data
 const spotifyInfo = function(choice){
+  if(choice === undefined) {
+		choice = "the sign ace of base";
+	}
   spotify.search({ type: 'track', query: choice, limit: 1 }, function(err, data) {
     if (err) {
       return console.log('Error occurred: ' + err);
@@ -41,7 +46,7 @@ const spotifyInfo = function(choice){
     // console.log(song);
     for(let i = 0; i < song.length; i++){
       console.log("Song Result:");
-      console.log("Artist My version: " + song[i].artists[0].name);  
+      console.log("Artist: " + song[i].artists[0].name);  
       console.log("Song Name: " + song[i].name); 
       console.log("Preview Link: " + song[i].preview_url); 
       console.log("Album: " + song[i].album.name); 
@@ -50,24 +55,25 @@ const spotifyInfo = function(choice){
   });
 };
 
-// var getVenueName = function(venue){
-//   return venue.name
-// };
+//Bands In Town function with user choice passed in. Use Moment to format date.
 const bandInfo = function(choice){
   let bandName = choice;
   let queryUrl = "https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp";
-  console.log(queryUrl);
   axios.get(queryUrl).then(
     function(response) {
-      let bandData = response;
-      for(var i = 0; i < bandData.length; i++){
-        console.log( bandData[i] );
-      }
+      let bandData = response.data;
       // console.log(bandData);
-      // console.log("Info: "+data.EventData);
-      console.log("Name of the venue: ");
-      console.log("Venue location: ");
-      console.log("Date of the Event: ");
+      for(var i = 0; i < bandData.length; i++){ 
+        console.log("Name of the venue: "  + bandData[1].description);
+        if (bandData[1].venue.region = " "){
+          console.log("Venue location: " + bandData[1].venue.city);
+        }else{
+          console.log("Venue location: " + bandData[1].venue.city + ", " + bandData[1].venue.region);
+        }
+        let dateTime = moment(bandData[1].datetime).format('MMMM Do YYYY, h:mm a');
+        console.log("Date of the Event: " + dateTime);
+        console.log("**".repeat(40));
+      }
     }
   );
 };
