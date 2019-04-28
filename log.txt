@@ -1,0 +1,6 @@
+node liri.js movie-this
+node liri.js movie-this Batman Begins
+node liri.js spotify-this-song 
+node liri.js spotify-this-song Thunderstruck
+node liri.js concert-this the Lumineers
+node liri.js

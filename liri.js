@@ -40,7 +40,7 @@ const movieInfo = function(choice){
 //Pass user Choice arg into spotifyInfo func. Check for no song input and assign to "The Sign" default if blank.
 //Query with limit 1. Return Data
 const spotifyInfo = function(choice){
-  if(choice === undefined) {
+  if(!choice) {
 		choice = "the sign ace of base";
 	}
   spotify.search({ type: 'track', query: choice, limit: 1 }, function(err, data) {
